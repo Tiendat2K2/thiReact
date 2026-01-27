@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { isAuthenticated } from "../utils/auth";
 import "./notfound.css";
 
 const NotFoundPage = () => {
   const isLoggedIn = isAuthenticated();
+  const location = useLocation();
 
   return (
     <div className="notfound-container">
@@ -18,17 +19,27 @@ const NotFoundPage = () => {
 
         <h1>404</h1>
         <h2>Oops! Trang không tồn tại</h2>
-        <p>Trang bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+        <p>Trang <code>{location.pathname}</code> bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
 
-        {isLoggedIn ? (
-          <Link to="/home" className="back-home">
-            Quay về trang chủ
-          </Link>
-        ) : (
-          <Link to="/" className="back-home">
-            Quay về đăng nhập
-          </Link>
-        )}
+        <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
+          {isLoggedIn ? (
+            <>
+              <Link to="/home" className="back-home">
+                🏠 Trang chủ
+              </Link>
+              <Link to="/account" className="back-home" style={{ backgroundColor: '#52c41a' }}>
+                👤 Tài khoản
+              </Link>
+              <Link to="/department" className="back-home" style={{ backgroundColor: '#722ed1' }}>
+                🏢 Phòng ban
+              </Link>
+            </>
+          ) : (
+            <Link to="/" className="back-home">
+              🔐 Quay về đăng nhập
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
