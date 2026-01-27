@@ -1,3 +1,4 @@
+// Modal popup hiển thị khi session hết hạn với options refresh hoặc logout
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle, faRefresh, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";

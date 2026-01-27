@@ -1,3 +1,4 @@
+// Component bảo vệ routes yêu cầu authentication, redirect về login nếu chưa đăng nhập
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
