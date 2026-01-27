@@ -1,3 +1,4 @@
+// Main routing và layout chính của ứng dụng với protected routes
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Home from "./pages/Home/Home";

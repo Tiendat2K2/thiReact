@@ -1,3 +1,4 @@
+// Component phân trang dữ liệu cho Department sử dụng Ant Design Pagination
 import { Pagination } from 'antd';
 const PaginationComponent = ({ current, pageSize, total, onChange }) => {
   return (

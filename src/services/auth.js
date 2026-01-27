@@ -1,3 +1,4 @@
+// API calls cho authentication: login, logout, refresh token, change password
 import api from "./api";
 import axios from 'axios';
 

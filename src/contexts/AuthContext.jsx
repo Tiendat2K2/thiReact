@@ -1,3 +1,4 @@
+// Context quản lý authentication, auto-refresh token và activity tracking
 import { createContext, useState, useEffect, useRef } from 'react';
 import { getMe, logout as logoutAPI, refreshToken } from '../services/auth';
 import { isAuthenticated, clearAuth } from '../utils/auth';

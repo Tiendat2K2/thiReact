@@ -1,3 +1,4 @@
+// Component filter theo type và search cho Department với auto-search
 import { useState } from 'react';
 
 const DateTypeFilter = ({ onAdd, onSearch, onClear, filters }) => {

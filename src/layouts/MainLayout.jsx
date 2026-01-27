@@ -1,3 +1,4 @@
+// Layout chính với sidebar navigation và header, sử dụng Outlet cho nested routes
 import { NavLink, Outlet } from "react-router-dom";
 import Header from "./Herader";
 import "./mainlayout.css";

@@ -1,3 +1,4 @@
+// Component render từng dòng trong bảng tài khoản với department mapping
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 

@@ -1,3 +1,4 @@
+// API calls cho quản lý tài khoản: CRUD operations và reset password
 // src/api/account.js
 import api from "./api";
 

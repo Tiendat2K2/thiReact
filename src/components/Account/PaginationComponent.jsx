@@ -1,3 +1,4 @@
+// Component phân trang dữ liệu sử dụng Ant Design Pagination
 import React from 'react';
 {/* Ant Design Pagination */}
 import { Pagination } from 'antd';

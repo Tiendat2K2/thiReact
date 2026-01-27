@@ -1,8 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { formatDateOnly } from "../../utils/dateUtils";
 
 const DepartmentRow = ({ dep, stt, onEdit, onDelete }) => {
+  // Format date using toLocaleString
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString('vi-VN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+    } catch (error) {
+      return 'N/A';
+    }
+  };
+
   return (
     <tr key={dep.id || stt} data-id={dep.id}>
       <td>
@@ -18,7 +32,7 @@ const DepartmentRow = ({ dep, stt, onEdit, onDelete }) => {
           {dep?.type || 'N/A'}
         </span>
       </td>
-      <td data-label="Create Date">{formatDateOnly(dep?.createDate || dep?.createdDate)}</td>
+      <td data-label="Create Date">{formatDate(dep?.createDate || dep?.createdDate)}</td>
       <td data-label="Actions" className="actions-cell">
         <button 
           className="btn-icon btn-edit" 
