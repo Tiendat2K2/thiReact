@@ -1,0 +1,1 @@
+- [x] Rearrange DateTypeFilter layout: Move search input and filters below the three buttons (Create Department, Search, Clear)
