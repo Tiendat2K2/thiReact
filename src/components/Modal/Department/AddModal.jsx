@@ -1,24 +1,26 @@
-import { useState } from "react";
+// Modal popup để thêm phòng ban mới với form validation đơn giản
 import { Modal, Form, Input, Select, Button } from "antd";
 import { toast } from "react-toastify";
 
 const { Option } = Select;
 
-const AddModal = ({ open, onCancel, onSubmit }) => {
-  const [loading, setLoading] = useState(false);
+const AddModal = ({ open, onCancel, onSubmit, loading }) => {
   const [form] = Form.useForm();
 
   const handleSubmit = async (values) => {
-    setLoading(true);
     try {
+      console.log('Department AddModal submitting:', values);
       await onSubmit(values);
-      
-      // Reset form sau khi thành công
-      form.resetFields();
     } catch (error) {
-      console.error("Add department error:", error);
-    } finally {
-      setLoading(false);
+      console.error('Department AddModal submit error:', error);
+      
+      // Xử lý lỗi từ API
+      if (error.response?.status === 400) {
+        const errorMessage = error.response.data?.message || "";
+        toast.error(errorMessage || "Có lỗi xảy ra khi thêm phòng ban");
+      } else {
+        toast.error("Có lỗi xảy ra khi thêm phòng ban");
+      }
     }
   };
 
@@ -31,12 +33,12 @@ const AddModal = ({ open, onCancel, onSubmit }) => {
 
   return (
     <Modal
-      title="Thêm phòng ban"
+      title="Thêm phòng ban mới"
       open={open}
       onCancel={handleClose}
       footer={null}
-      width={450}
-      destroyOnClose
+      width={500}
+      centered
     >
       <Form
         form={form}
@@ -89,7 +91,7 @@ const AddModal = ({ open, onCancel, onSubmit }) => {
             htmlType="submit"
             loading={loading}
           >
-            Thêm
+            Thêm phòng ban
           </Button>
         </Form.Item>
       </Form>

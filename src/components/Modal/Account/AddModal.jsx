@@ -103,30 +103,30 @@ const AddModal = ({ open, onCancel, onSubmit, loading }) => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="First Name"
-              name="firstName"
+              label="Họ"
+              name="lastName"
               rules={[
-                { required: true, message: "Vui lòng nhập first name!" },
-                { whitespace: true, message: "First name không được để trống!" }
+                { required: true, message: "Vui lòng nhập họ!" },
+                { whitespace: true, message: "Họ không được để trống!" }
               ]}
             >
               <Input 
-                placeholder="Nhập first name"
+                placeholder="Nhập họ"
                 size="large"
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label="Last Name"
-              name="lastName"
+              label="Tên"
+              name="firstName"
               rules={[
-                { required: true, message: "Vui lòng nhập last name!" },
-                { whitespace: true, message: "Last name không được để trống!" }
+                { required: true, message: "Vui lòng nhập tên!" },
+                { whitespace: true, message: "Tên không được để trống!" }
               ]}
             >
               <Input 
-                placeholder="Nhập last name"
+                placeholder="Nhập tên"
                 size="large"
               />
             </Form.Item>

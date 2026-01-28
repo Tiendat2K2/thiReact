@@ -1,8 +1,9 @@
-import React from "react";
 import DepartmentRow from "./Row";
-const DepartmentTable = ({ filteredDepartments, onEdit, onDelete, currentPage = 1, pageSize = 10 }) => {
+
+const DepartmentTable = ({ filteredDepartments, onEdit, onDelete, currentPage = 1, pageSize = 10, loading }) => {
   // Khai báo header giống AccountTable
   const headers = ["STT", "Name", "Total member", "Type", "Create date", "Actions"];
+  
   return (
     <table className="department-table">
       <thead>
@@ -16,7 +17,32 @@ const DepartmentTable = ({ filteredDepartments, onEdit, onDelete, currentPage = 
       </thead>
 
       <tbody>
-        {filteredDepartments && filteredDepartments.length > 0 ? (
+        {loading ? (
+          <tr>
+            <td colSpan={7} style={{ 
+              textAlign: "center", 
+              padding: "40px 20px",
+              backgroundColor: '#fafafa',
+              color: '#666'
+            }}>
+              <div className="spinner" style={{ marginBottom: '12px' }}></div>
+              <div>Loading departments...</div>
+            </td>
+          </tr>
+        ) : !Array.isArray(filteredDepartments) || filteredDepartments.length === 0 ? (
+          <tr>
+            <td colSpan={7} style={{ 
+              textAlign: "center", 
+              padding: "40px 20px",
+              backgroundColor: '#fafafa',
+              color: '#666'
+            }}>
+              <div style={{ fontSize: '32px', marginBottom: '12px' }}>🏢</div>
+              <div style={{ fontWeight: '500', marginBottom: '4px' }}>Không tìm thấy phòng ban</div>
+              <div style={{ fontSize: '14px' }}>Thử thay đổi bộ lọc hoặc tạo phòng ban mới</div>
+            </td>
+          </tr>
+        ) : (
           filteredDepartments.map((dep, index) => (
             <DepartmentRow
               key={dep.id || index}
@@ -26,12 +52,6 @@ const DepartmentTable = ({ filteredDepartments, onEdit, onDelete, currentPage = 
               onDelete={onDelete}
             />
           ))
-        ) : (
-          <tr>
-            <td colSpan={7} style={{ textAlign: "center", padding: "20px" }}>
-              No data found
-            </td>
-          </tr>
         )}
       </tbody>
     </table>

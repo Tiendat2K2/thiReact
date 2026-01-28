@@ -115,10 +115,10 @@ const Account = () => {
         totalElements = response.data.totalElements || response.data.length || 0;
       }
       
-      // Process accounts with fullName only
+      // Process accounts with fullName - Họ + Tên (lastName + firstName)
       const processedAccounts = accountData.map(account => ({
         ...account,
-        fullName: `${account.firstName || ''} ${account.lastName || ''}`.trim()
+        fullName: `${account.lastName || ''} ${account.firstName || ''}`.trim()
       }));
       
       setAccounts(processedAccounts);
@@ -128,10 +128,39 @@ const Account = () => {
         pageSize: size,
         total: totalElements
       }));
+
+      // Log để debug
+      console.log('Accounts loaded:', {
+        total: totalElements,
+        count: processedAccounts.length,
+        hasFilters: !!filterParams
+      });
+
     } catch (error) {
       console.error("Fetch accounts error:", error);
-      toast.error("Không thể tải danh sách tài khoản");
-      setAccounts([]);
+      
+      // Chỉ hiển thị toast error nếu là lỗi thật sự (không phải empty result)
+      if (error.response?.status === 404) {
+        // 404 có thể là không tìm thấy kết quả - không hiển thị error toast
+        console.log('No accounts found for current filters');
+        setAccounts([]);
+        setPagination(prev => ({
+          ...prev,
+          current: page,
+          pageSize: size,
+          total: 0
+        }));
+      } else {
+        // Lỗi thật sự - hiển thị toast
+        toast.error("Không thể tải danh sách tài khoản");
+        setAccounts([]);
+        setPagination(prev => ({
+          ...prev,
+          current: page,
+          pageSize: size,
+          total: 0
+        }));
+      }
     } finally {
       setLoading(false);
     }
@@ -272,13 +301,6 @@ const Account = () => {
         departments={departments}
         loadingDepartments={false}
       />
-
-      {/* Loading */}
-      {loading && (
-        <div style={{ textAlign: "center", padding: "20px" }}>
-          Loading...
-        </div>
-      )}
 
       {/* Table */}
       <div style={{ position: "relative" }}>

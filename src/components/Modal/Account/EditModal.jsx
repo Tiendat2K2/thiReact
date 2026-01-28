@@ -1,105 +1,195 @@
-import { useEffect, useState, useCallback } from "react";
-import { Modal, Form, Input, Select, Button } from "antd";
+// Modal popup để sửa tài khoản với form validation và pre-fill data
+import { useEffect, useState } from "react";
+import { Modal, Form, Input, Select, Button, Row, Col } from "antd";
 import { toast } from "react-toastify";
 import { getDepartments } from "../../../services/department";
 
-
 const { Option } = Select;
 
-function EditModal({ open, onCancel, onSubmit, loading, data }) {
+const EditModal = ({ open, onCancel, onSubmit, loading, data }) => {
   const [form] = Form.useForm();
   const [departments, setDepartments] = useState([]);
   const [loadingDepts, setLoadingDepts] = useState(false);
 
-  const fetchDepartments = useCallback(async () => {
-    setLoadingDepts(true);
-    try {
-      const res = await getDepartments();
-      const resData = res.data || res;
-      setDepartments(resData.content || []);
-    } catch (err) {
-      console.error(err);
-      toast.error("Không thể tải danh sách phòng ban");
-    } finally {
-      setLoadingDepts(false);
+  // Reset form khi modal đóng
+  useEffect(() => {
+    if (!open) {
+      form.resetFields();
     }
-  }, []);
+  }, [open, form]);
 
+  // Fetch departments khi modal mở
   useEffect(() => {
     if (open) {
       fetchDepartments();
-      form.resetFields();
     }
-  }, [open, form, fetchDepartments]);
+  }, [open]);
 
+  // Set form values khi có data
   useEffect(() => {
     if (open && data) {
-      const departmentid = (data.departmentid === 1073741824 || !Number.isInteger(data.departmentid)) 
+      console.log('Account EditModal received data:', data);
+      
+      // Xử lý departmentid - nếu là magic number thì set undefined
+      const departmentid = (data.departmentid === 1073741824 || !data.departmentid) 
         ? undefined 
         : data.departmentid;
 
-      form.setFieldsValue({
-        username: data.username,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        role: data.role,
-        departmentid
-      });
-    }
-  }, [open, data, form]);
+      // Delay một chút để đảm bảo form và departments đã load
+      setTimeout(() => {
+        form.setFieldsValue({
+          username: data.username || '',
+          firstName: data.firstName || '',
+          lastName: data.lastName || '',
+          role: data.role || '',
+          departmentid: departmentid
+        });
 
-  const handleFinish = async (values) => {
+        console.log('Account form values set:', {
+          username: data.username,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          role: data.role,
+          departmentid: departmentid
+        });
+      }, 200);
+    }
+  }, [open, data, form, departments]);
+
+  const fetchDepartments = async () => {
+    setLoadingDepts(true);
     try {
-      await onSubmit({
-        ...values,
-        departmentid: Number(values.departmentid)
-      });
+      const response = await getDepartments();
+      const departmentsData = response.data || response;
+      const deptList = departmentsData.content || (Array.isArray(departmentsData) ? departmentsData : []);
+      
+      setDepartments(deptList);
+      console.log('Departments loaded:', deptList);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Có lỗi xảy ra khi cập nhật tài khoản");
+      console.error("Fetch departments error:", error);
+      toast.error("Không thể tải danh sách phòng ban");
+      setDepartments([]);
+    } finally {
+      setLoadingDepts(false);
+    }
+  };
+
+  const handleSubmit = async (values) => {
+    try {
+      console.log('EditModal submitting values:', values);
+      
+      const submitData = {
+        ...values,
+        departmentid: values.departmentid ? parseInt(values.departmentid, 10) : null
+      };
+
+      // Validate departmentid
+      if (isNaN(submitData.departmentid) && submitData.departmentid !== null) {
+        toast.error("Department ID không hợp lệ");
+        return;
+      }
+
+      await onSubmit(submitData);
+    } catch (error) {
+      console.error('EditModal submit error:', error);
+      
+      // Xử lý lỗi từ API
+      if (error.response?.status === 400) {
+        const errorMessage = error.response.data?.message || "";
+        
+        if (errorMessage.toLowerCase().includes("username") && errorMessage.toLowerCase().includes("tồn tại")) {
+          toast.error("Username đã tồn tại");
+        } else {
+          toast.error(errorMessage || "Có lỗi xảy ra khi cập nhật tài khoản");
+        }
+      } else {
+        toast.error("Có lỗi xảy ra khi cập nhật tài khoản");
+      }
+    }
+  };
+
+  const handleClose = () => {
+    if (!loading) {
+      form.resetFields();
+      onCancel();
     }
   };
 
   return (
     <Modal
-      open={open}
       title="Sửa tài khoản"
-      onCancel={onCancel}
+      open={open}
+      onCancel={handleClose}
       footer={null}
+      width={600}
       centered
+      maskClosable={false}
     >
-      <Form form={form} layout="vertical" onFinish={handleFinish}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        disabled={loading}
+        preserve={false}
+      >
         <Form.Item
           label="Username"
           name="username"
-          rules={[{ required: true, message: "Username là bắt buộc" }]}
+          rules={[
+            { required: true, message: "Vui lòng nhập username!" },
+            { whitespace: true, message: "Username không được để trống!" }
+          ]}
         >
-          <Input />
+          <Input 
+            placeholder="Nhập username"
+            size="large"
+          />
         </Form.Item>
 
-        <div className="form-row">
-          <Form.Item
-            label="First Name"
-            name="firstName"
-            rules={[{ required: true, message: "First Name là bắt buộc" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Last Name"
-            name="lastName"
-            rules={[{ required: true, message: "Last Name là bắt buộc" }]}
-          >
-            <Input />
-          </Form.Item>
-        </div>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label="Họ"
+              name="lastName"
+              rules={[
+                { required: true, message: "Vui lòng nhập họ!" },
+                { whitespace: true, message: "Họ không được để trống!" }
+              ]}
+            >
+              <Input 
+                placeholder="Nhập họ"
+                size="large"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Tên"
+              name="firstName"
+              rules={[
+                { required: true, message: "Vui lòng nhập tên!" },
+                { whitespace: true, message: "Tên không được để trống!" }
+              ]}
+            >
+              <Input 
+                placeholder="Nhập tên"
+                size="large"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item
           label="Role"
           name="role"
-          rules={[{ required: true, message: "Role là bắt buộc" }]}
+          rules={[
+            { required: true, message: "Vui lòng chọn role!" }
+          ]}
         >
-          <Select placeholder="Chọn role">
+          <Select 
+            placeholder="Chọn role"
+            size="large"
+          >
             <Option value="ADMIN">Admin</Option>
             <Option value="MANAGER">Manager</Option>
             <Option value="EMPLOYEE">Employee</Option>
@@ -109,13 +199,17 @@ function EditModal({ open, onCancel, onSubmit, loading, data }) {
         <Form.Item
           label="Department"
           name="departmentid"
-          rules={[{ required: true, message: "Department là bắt buộc" }]}
+          rules={[
+            { required: true, message: "Vui lòng chọn phòng ban!" }
+          ]}
         >
-          <Select
-            placeholder={loadingDepts ? "Loading..." : "Chọn phòng ban"}
+          <Select 
+            placeholder={loadingDepts ? "Loading departments..." : "Chọn phòng ban"}
+            size="large"
             loading={loadingDepts}
+            disabled={loadingDepts}
           >
-            {departments.map(dept => (
+            {departments.map((dept) => (
               <Option key={dept.id} value={dept.id}>
                 {dept.name}
               </Option>
@@ -123,15 +217,25 @@ function EditModal({ open, onCancel, onSubmit, loading, data }) {
           </Select>
         </Form.Item>
 
-        <div className="modal-footer">
-          <Button onClick={onCancel}>Hủy</Button>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Cập nhật
+        <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
+          <Button 
+            onClick={handleClose}
+            disabled={loading}
+            style={{ marginRight: 8 }}
+          >
+            Hủy
           </Button>
-        </div>
+          <Button 
+            type="primary" 
+            htmlType="submit"
+            loading={loading}
+          >
+            Cập nhật tài khoản
+          </Button>
+        </Form.Item>
       </Form>
     </Modal>
   );
-}
+};
 
 export default EditModal;

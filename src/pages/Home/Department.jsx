@@ -85,10 +85,39 @@ const Department = () => {
         pageSize: size,
         total: totalElements
       }));
+
+      // Log để debug
+      console.log('Departments loaded:', {
+        total: totalElements,
+        count: departmentData.length,
+        hasFilters: !!filterParams
+      });
+
     } catch (error) {
       console.error("Fetch departments error:", error);
-      toast.error("Không thể tải danh sách phòng ban");
-      setDepartments([]);
+      
+      // Chỉ hiển thị toast error nếu là lỗi thật sự (không phải empty result)
+      if (error.response?.status === 404) {
+        // 404 có thể là không tìm thấy kết quả - không hiển thị error toast
+        console.log('No departments found for current filters');
+        setDepartments([]);
+        setPagination(prev => ({
+          ...prev,
+          current: page,
+          pageSize: size,
+          total: 0
+        }));
+      } else {
+        // Lỗi thật sự - hiển thị toast
+        toast.error("Không thể tải danh sách phòng ban");
+        setDepartments([]);
+        setPagination(prev => ({
+          ...prev,
+          current: page,
+          pageSize: size,
+          total: 0
+        }));
+      }
     } finally {
       setLoading(false);
     }
@@ -189,13 +218,6 @@ const Department = () => {
         onClear={handleClearFilters}
         filters={filters}
       />
-
-      {/* Loading */}
-      {loading && (
-        <div style={{ textAlign: "center", padding: "20px" }}>
-          Loading...
-        </div>
-      )}
 
       {/* Table */}
       <div style={{ position: "relative" }}>

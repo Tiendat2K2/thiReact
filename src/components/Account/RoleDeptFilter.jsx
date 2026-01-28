@@ -110,9 +110,9 @@ if (filters !== prevFilters) {
 
       <input
         type="text"
-        placeholder="Search first name..."
-        value={localFilters.firstName}
-        onChange={(e) => handleFilterChange('firstName', e.target.value)}
+        placeholder="Tìm theo họ..."
+        value={localFilters.lastName}
+        onChange={(e) => handleFilterChange('lastName', e.target.value)}
         onKeyDown={handleKeyPress}
         style={{
           padding: "8px 12px",
@@ -124,9 +124,9 @@ if (filters !== prevFilters) {
 
       <input
         type="text"
-        placeholder="Search last name..."
-        value={localFilters.lastName}
-        onChange={(e) => handleFilterChange('lastName', e.target.value)}
+        placeholder="Tìm theo tên..."
+        value={localFilters.firstName}
+        onChange={(e) => handleFilterChange('firstName', e.target.value)}
         onKeyDown={handleKeyPress}
         style={{
           padding: "8px 12px",

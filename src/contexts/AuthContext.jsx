@@ -101,8 +101,8 @@ export const AuthProvider = ({ children }) => {
       const response = await getMe(); // API /auth/me
       const userData = response.data;
       
-      // Tạo fullname từ firstName + lastName
-      const fullname = `${userData.firstName} ${userData.lastName}`.trim();
+      // Tạo fullname từ lastName + firstName (Họ + Tên)
+      const fullname = `${userData.lastName} ${userData.firstName}`.trim();
       
       setUser({
         ...userData,

@@ -1,32 +1,56 @@
-import { useState, useEffect } from "react";
+// Modal popup để sửa phòng ban với form validation và pre-fill data
+import { useEffect } from "react";
 import { Modal, Form, Input, Select, Button } from "antd";
 import { toast } from "react-toastify";
 
 const { Option } = Select;
 
-const EditModal = ({ open, onCancel, onSubmit, data }) => {
-  const [loading, setLoading] = useState(false);
+const EditModal = ({ open, onCancel, onSubmit, data, loading }) => {
   const [form] = Form.useForm();
 
-  // Populate form với data khi modal mở
+  // Reset form khi modal đóng
+  useEffect(() => {
+    if (!open) {
+      form.resetFields();
+    }
+  }, [open, form]);
+
+  // Set form values khi có data
   useEffect(() => {
     if (open && data) {
-      form.setFieldsValue({
-        name: data.name || "",
-        type: data.type || ""
-      });
+      console.log('Department EditModal received data:', data);
+      
+      // Delay một chút để đảm bảo form đã render
+      setTimeout(() => {
+        form.setFieldsValue({
+          name: data.name || "",
+          type: data.type || ""
+        });
+
+        console.log('Department form values set:', {
+          name: data.name,
+          type: data.type
+        });
+      }, 100);
     }
   }, [open, data, form]);
 
   const handleSubmit = async (values) => {
-    setLoading(true);
     try {
+      console.log('Department EditModal submitting:', values);
+      
       // Truyền cả data.id để biết đang sửa department nào
-      await onSubmit(values, data.id);
+      await onSubmit(values, data?.id);
     } catch (error) {
       console.error("Edit department error:", error);
-    } finally {
-      setLoading(false);
+      
+      // Xử lý lỗi từ API
+      if (error.response?.status === 400) {
+        const errorMessage = error.response.data?.message || "";
+        toast.error(errorMessage || "Có lỗi xảy ra khi cập nhật phòng ban");
+      } else {
+        toast.error("Có lỗi xảy ra khi cập nhật phòng ban");
+      }
     }
   };
 
@@ -43,14 +67,16 @@ const EditModal = ({ open, onCancel, onSubmit, data }) => {
       open={open}
       onCancel={handleClose}
       footer={null}
-      width={450}
-      destroyOnClose
+      width={500}
+      centered
+      maskClosable={false}
     >
       <Form
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
         disabled={loading}
+        preserve={false}
       >
         <Form.Item
           label="Tên phòng ban"
@@ -97,7 +123,7 @@ const EditModal = ({ open, onCancel, onSubmit, data }) => {
             htmlType="submit"
             loading={loading}
           >
-            Cập nhật
+            Cập nhật phòng ban
           </Button>
         </Form.Item>
       </Form>
