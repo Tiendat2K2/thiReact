@@ -144,6 +144,15 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       setIsLoggedIn(false);
       clearAuth(); // Xóa access token
+      
+      // Kiểm tra Remember Me - chỉ xóa credentials nếu user không check "Ghi nhớ"
+      const shouldRemember = localStorage.getItem('remember_me') === 'true';
+      if (!shouldRemember) {
+        // User không check "Ghi nhớ" → Xóa hết thông tin đăng nhập
+        localStorage.removeItem('saved_username');
+        localStorage.removeItem('saved_password');
+      }
+      // Nếu shouldRemember = true → Giữ nguyên saved_username và saved_password
     }
   };
 
