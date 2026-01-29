@@ -70,7 +70,7 @@ const NotFoundPage = () => {
             </>
           ) : (
             <Link
-              to="/login"
+              to="/"
               className="back-home"
               style={{ backgroundColor: "#1890ff" }}
             >
