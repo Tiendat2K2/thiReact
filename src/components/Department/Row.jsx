@@ -12,7 +12,7 @@ const DepartmentRow = ({ dep, stt, onEdit, onDelete }) => {
         month: '2-digit',
         day: '2-digit'
       });
-    } catch (error) {
+    } catch {
       return 'N/A';
     }
   };
