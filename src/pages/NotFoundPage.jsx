@@ -37,7 +37,7 @@ const NotFoundPage = () => {
             ></dotlottie-wc>
           ) : (
             <div style={{ width: "350px", height: "350px", display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '80px' }}>
-              ❌
+              Trang không tồn tại
             </div>
           )}
         </div>
