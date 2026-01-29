@@ -1,146 +1,104 @@
-/* ===== 404 NOT FOUND ===== */
-.notfound-container {
-  height: 100vh;
-  width: 100%;
-  background: radial-gradient(circle at top, #1e293b, #020617);
+.notfound-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  color: #e5e7eb;
-  overflow: hidden;
+  padding: 20px;
 }
 
-.notfound-content {
+.notfound-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 30px;
+  max-width: 420px;
+  width: 100%;
   text-align: center;
-  animation: fadeUp 0.6s ease forwards;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  animation: fadeUp 0.6s ease;
 }
 
-/* Lottie Animation Container - Hiển thị đầu tiên và nổi bật */
-.lottie-animation {
-  margin-bottom: 20px;
-  animation: bounceIn 0.8s ease forwards;
-  filter: drop-shadow(0 10px 25px rgba(250, 204, 21, 0.3));
-  order: -1; /* Đưa animation lên trước */
+.animation-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
-/* Animation cho Lottie */
-@keyframes bounceIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.3) translateY(-30px);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05) translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+.animation-box dotlottie-wc {
+  width: 260px;
+  height: 260px;
 }
 
-/* Số 404 lớn */
-.notfound-content h1 {
-  font-size: 120px;
-  font-weight: 900;
-  color: #facc15;
-  margin: 0;
-  text-shadow: 0 0 30px rgba(250, 204, 21, 0.5);
-  animation: glow 2s ease-in-out infinite alternate, fadeUpDelay 0.6s ease forwards 0.3s;
-  animation-fill-mode: both;
+.fallback-text {
+  font-size: 80px;
+  font-weight: bold;
+  color: #999;
 }
 
-/* Tiêu đề */
-.notfound-content h2 {
+.error-code {
+  font-size: 64px;
+  margin: 10px 0 0;
+  color: #764ba2;
+}
+
+.error-title {
   font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
   margin: 10px 0;
-  animation: fadeUpDelay 0.6s ease forwards 0.5s;
-  animation-fill-mode: both;
 }
 
-/* Mô tả */
-.notfound-content p {
-  font-size: 16px;
-  color: #9ca3af;
-  margin: 10px 0 20px 0;
-  animation: fadeUpDelay 0.7s ease forwards 0.7s;
-  animation-fill-mode: both;
+.error-desc {
+  font-size: 14px;
+  color: #666;
 }
 
-/* Nút quay lại */
-.back-home {
-  margin-top: 10px;
-  padding: 10px 26px;
-  background: linear-gradient(135deg, #facc15, #eab308);
-  color: #020617;
-  font-weight: 600;
-  border-radius: 999px;
+.error-desc code {
+  background: #f3f3f3;
+  padding: 2px 6px;
+  border-radius: 6px;
+  color: #333;
+}
+
+.button-group {
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 10px;
   text-decoration: none;
-  box-shadow: 0 10px 25px rgba(250, 204, 21, 0.35);
-  transition: all 0.3s ease;
-  animation: fadeUpDelay 0.8s ease forwards 0.9s;
-  animation-fill-mode: both;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.25s ease;
 }
 
-.back-home:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 16px 35px rgba(250, 204, 21, 0.55);
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
 }
 
-/* Animation chữ + nút */
+.btn.primary {
+  background: #1677ff;
+}
+
+.btn.success {
+  background: #52c41a;
+}
+
+.btn.purple {
+  background: #722ed1;
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* Animation với delay */
-@keyframes fadeUpDelay {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Animation glow cho số 404 */
-@keyframes glow {
-  from {
-    text-shadow: 0 0 30px rgba(250, 204, 21, 0.5);
-  }
-  to {
-    text-shadow: 0 0 50px rgba(250, 204, 21, 0.8);
-  }
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .notfound-content h1 {
-    font-size: 80px;
-  }
-  
-  .notfound-content h2 {
-    font-size: 18px;
-  }
-
-  .notfound-content p {
-    font-size: 14px;
-  }
-
-  .back-home {
-    padding: 8px 20px;
-    font-size: 14px;
   }
 }
