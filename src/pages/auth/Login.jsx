@@ -7,7 +7,7 @@ import { Form, Input, Button, Checkbox } from "antd";           // Ant Design co
 import { login as loginAPI } from "../../services/auth";        // API gọi server để đăng nhập
 import { isAuthenticated, setTokens, saveCredentials, clearCredentials, getSavedCredentials } from "../../utils/auth";  // Auth utilities
 import { useAuth } from "../../hooks/useAuth";                  // Context quản lý state user
-import QuenmatkhauModal from "../../components/Modal/login/Quenmatkhau.Modal"; // Modal nhập email quên mật khẩu
+import QuenmatkhauModal from "../../components/Modal/login/QuenmatkhauModal"; // Modal nhập email quên mật khẩu
 import Xacthuc from "../../components/Modal/login/Xacthuc";     // Modal xác thực OTP + đổi mật khẩu
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'; // Ant Design icons
 

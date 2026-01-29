@@ -4,7 +4,7 @@ import "./account.css";
 import AddModal from "../../components/Modal/Account/AddModal";
 import EditModal from "../../components/Modal/Account/EditModal";
 import DeleteModal from "../../components/Modal/Account/DeleteModal";
-import ResetPasswordModal from "../../components/Modal/Account/ResetPassword.Modal";
+import ResetPasswordModal from "../../components/Modal/Account/ResetPasswordModal";
 import RoleDeptFilter from "../../components/Account/RoleDeptFilter";
 import AccountTable from "../../components/Account/Table";
 import PaginationComponent from "../../components/Account/PaginationComponent";
