@@ -19,9 +19,6 @@ const DepartmentRow = ({ dep, stt, onEdit, onDelete }) => {
 
   return (
     <tr key={dep.id || stt} data-id={dep.id}>
-      <td>
-        <input type="checkbox" />
-      </td>
       <td data-label="STT">{stt}</td>
       <td data-label="Name">
         <span className="text-mono">{dep?.name || 'N/A'}</span>

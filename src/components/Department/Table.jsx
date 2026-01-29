@@ -8,8 +8,6 @@ const DepartmentTable = ({ filteredDepartments, onEdit, onDelete, currentPage = 
     <table className="department-table">
       <thead>
         <tr>
-          {/* Checkbox column */}
-          <th style={{ width: "40px" }}></th>
           {headers.map((item, index) => (
             <th key={index}>{item}</th>
           ))}
@@ -19,7 +17,7 @@ const DepartmentTable = ({ filteredDepartments, onEdit, onDelete, currentPage = 
       <tbody>
         {loading ? (
           <tr>
-            <td colSpan={7} style={{ 
+            <td colSpan={6} style={{ 
               textAlign: "center", 
               padding: "40px 20px",
               backgroundColor: '#fafafa',
@@ -31,7 +29,7 @@ const DepartmentTable = ({ filteredDepartments, onEdit, onDelete, currentPage = 
           </tr>
         ) : !Array.isArray(filteredDepartments) || filteredDepartments.length === 0 ? (
           <tr>
-            <td colSpan={7} style={{ 
+            <td colSpan={6} style={{ 
               textAlign: "center", 
               padding: "40px 20px",
               backgroundColor: '#fafafa',
