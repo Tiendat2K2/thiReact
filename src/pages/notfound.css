@@ -18,6 +18,29 @@
   animation: fadeUp 0.6s ease forwards;
 }
 
+/* Lottie Animation Container - Hiển thị đầu tiên và nổi bật */
+.lottie-animation {
+  margin-bottom: 20px;
+  animation: bounceIn 0.8s ease forwards;
+  filter: drop-shadow(0 10px 25px rgba(250, 204, 21, 0.3));
+}
+
+/* Animation cho Lottie */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-30px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05) translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 /* Số 404 lớn */
 .notfound-content h1 {
   font-size: 120px;

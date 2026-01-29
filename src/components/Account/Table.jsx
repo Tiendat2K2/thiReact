@@ -1,6 +1,6 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrash, faArrowRotateRight } from "@fortawesome/free-solid-svg-icons";
 
 const AccountTable = ({ filteredAccounts, onEdit, onDelete, onResetPassword, currentPage = 1, pageSize = 10, loading, departments = {} }) => {
   console.log('AccountTable props:', { onResetPassword: !!onResetPassword });
@@ -94,9 +94,9 @@ const AccountTable = ({ filteredAccounts, onEdit, onDelete, onResetPassword, cur
                         onResetPassword && onResetPassword(acc);
                       }}
                       title="Reset password"
-                      style={{ color: "#52c41a", marginRight: "8px", background: "yellow" }}
+                      style={{ color: "#01db25", marginRight: "8px" }}
                     >
-                      🔑
+                    <FontAwesomeIcon icon={faArrowRotateRight} />
                     </button>
                     <button 
                       className="btn-icon btn-delete" 
