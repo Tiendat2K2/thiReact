@@ -65,30 +65,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Update last activity time
-  const updateActivity = () => {
-    localStorage.setItem('last_activity', Date.now().toString());
-  };
-
-  // Start activity tracking
-  const startActivityTracking = () => {
-    // Track các events user interaction
-    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
-    
-    const handleActivity = () => {
-      updateActivity();
-    };
-
-    events.forEach(event => {
-      document.addEventListener(event, handleActivity, true);
-    });
-
-    // Initial activity
-    updateActivity();
-    
-    console.log('👀 Activity tracking started');
-  };
-
   // Gọi API /auth/me để lấy thông tin user
   const fetchUserInfo = async () => {
     if (!isAuthenticated()) {
@@ -124,9 +100,8 @@ export const AuthProvider = ({ children }) => {
   const login = async () => {
     await fetchUserInfo();
     
-    // Start auto refresh và activity tracking sau khi login
+    // Start auto refresh sau khi login
     startAutoRefresh();
-    startActivityTracking();
   };
 
   // Logout - clear tất cả thông tin và gọi API logout
@@ -168,7 +143,6 @@ export const AuthProvider = ({ children }) => {
     // Nếu đã login thì start auto refresh
     if (isAuthenticated()) {
       startAutoRefresh();
-      startActivityTracking();
     }
 
     // Cleanup function

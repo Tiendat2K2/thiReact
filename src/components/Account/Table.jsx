@@ -1,35 +1,28 @@
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash, faArrowRotateRight } from "@fortawesome/free-solid-svg-icons";
+import AccountRow from "./Row";
 
 const AccountTable = ({ filteredAccounts, onEdit, onDelete, onResetPassword, currentPage = 1, pageSize = 10, loading, departments = {} }) => {
   console.log('AccountTable props:', { onResetPassword: !!onResetPassword });
-  // Helper function để get department name
-  const getDepartmentName = (departmentid) => {
-    // Nếu không có departmentid hoặc departmentid invalid
-    if (!departmentid || departmentid === null || departmentid === undefined) {
-      return 'No Department';
-    }
-    
-    // Nếu department đã bị xóa (không tồn tại trong departments mapping)
-    if (!departments[departmentid]) {
-      return 'null'; // Hiển thị "null" khi department bị xóa
-    }
-    
-    // Return department name
-    return departments[departmentid];
-  };
+  
+  // Header configuration
+  const headers = [
+    { label: "STT", width: "50px" },
+    { label: "Username", width: "150px" },
+    { label: "Họ và tên đầy đủ", width: "180px" },
+    { label: "Role", width: "100px" },
+    { label: "Department", width: "120px" },
+    { label: "Actions", width: "120px" }
+  ];
+
   return (
     <div className="table-wrapper">
       <table className="account-table">
         <thead>
           <tr>
-            <th style={{ width: "50px" }}>STT</th>
-            <th style={{ width: "150px" }}>Username</th>
-            <th style={{ width: "180px" }}>Họ và tên đầy đủ</th>
-            <th style={{ width: "100px" }}>Role</th>
-            <th style={{ width: "120px" }}>Department</th>
-            <th style={{ width: "120px" }}>Actions</th>
+            {headers.map((header, index) => (
+              <th key={index} style={{ width: header.width }}>
+                {header.label}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -62,52 +55,15 @@ const AccountTable = ({ filteredAccounts, onEdit, onDelete, onResetPassword, cur
             filteredAccounts.map((acc, index) => {
               const stt = (currentPage - 1) * pageSize + index + 1;
               return (
-                <tr key={acc.id || index} data-id={acc.id}>
-                  <td data-label="STT">{stt}</td>
-                  <td data-label="Username">
-                    <span className="text-mono">{acc?.username || 'N/A'}</span>
-                  </td>
-                  <td data-label="Full Name">{acc?.fullName || 'N/A'}</td>
-                  <td data-label="Role">
-                    <span className={`badge badge-${(acc?.role || '').toLowerCase()}`}>
-                      {acc?.role || 'N/A'}
-                    </span>
-                  </td>
-                  <td data-label="Department">
-                    <span className={`dept-badge ${getDepartmentName(acc?.departmentid) === 'null' ? 'empty' : ''}`}>
-                      {getDepartmentName(acc?.departmentid) || 'N/A'}
-                    </span>
-                  </td>
-                  <td data-label="Actions" className="actions-cell">
-                    <button 
-                      className="btn-icon btn-edit" 
-                      onClick={() => onEdit && onEdit(acc)}
-                      title="Edit account"
-                      style={{ color: "#1890ff", marginRight: "8px" }}
-                    >
-                      <FontAwesomeIcon icon={faPen} />
-                    </button>
-                    <button 
-                      className="btn-icon btn-reset" 
-                      onClick={() => {
-                        console.log('Reset clicked for:', acc.username);
-                        onResetPassword && onResetPassword(acc);
-                      }}
-                      title="Reset password"
-                      style={{ color: "#01db25", marginRight: "8px" }}
-                    >
-                    <FontAwesomeIcon icon={faArrowRotateRight} />
-                    </button>
-                    <button 
-                      className="btn-icon btn-delete" 
-                      onClick={() => onDelete && onDelete(acc)}
-                      title="Delete account"
-                      style={{ color: "#ff4d4f" }}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                  </td>
-                </tr>
+                <AccountRow
+                  key={acc.id || index}
+                  acc={acc}
+                  stt={stt}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onResetPassword={onResetPassword}
+                  departments={departments}
+                />
               );
             })
           )}

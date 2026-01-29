@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, Button, Row, Col } from "antd";
 import { toast } from "react-toastify";
 import { getDepartments } from "../../../services/department";
-
 const { Option } = Select;
-
 const AddModal = ({ open, onCancel, onSubmit, loading }) => {
   const [form] = Form.useForm();
   const [departments, setDepartments] = useState([]);

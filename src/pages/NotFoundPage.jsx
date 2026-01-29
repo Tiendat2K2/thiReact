@@ -1,80 +1,69 @@
 // Trang 404 Not Found với Lottie animation và navigation links
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { isAuthenticated } from "../utils/auth";
 import "./notfound.css";
 
 const NotFoundPage = () => {
-  const isLoggedIn = isAuthenticated();
-  const location = useLocation();
+  const isLoggedIn = isAuthenticated();    // Kiểm tra user đã đăng nhập chưa
+  const location = useLocation();          // Lấy URL hiện tại để hiển thị
+  const [scriptLoaded, setScriptLoaded] = useState(false);
+
+  useEffect(() => {
+    // Kiểm tra xem dotlottie-wc script đã load chưa
+    const checkDotLottie = () => {
+      if (window.DotLottieWC || customElements.get('dotlottie-wc')) {
+        setScriptLoaded(true);
+      } else {
+        // Nếu chưa load, chờ 100ms rồi check lại
+        setTimeout(checkDotLottie, 100);
+      }
+    };
+    
+    checkDotLottie();
+  }, []);
 
   return (
-    <div className="min-h-screen w-full bg-white relative overflow-hidden notfound-container">
-      {/* Green Corner Soft Background */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle 600px at 0% 200px, #bbf7d0, transparent),
-            radial-gradient(circle 600px at 100% 200px, #bbf7d0, transparent)
-          `,
-        }}
-      />
+    <div className="notfound-container">
+      <div className="notfound-content">
+        {/* 🎬 Lottie Animation - 404 Error Animation - Hiển thị đầu tiên */}
+        <div className="lottie-animation">
+          {scriptLoaded ? (
+            <dotlottie-wc
+              src="https://lottie.host/716c3fae-16ef-46cb-b5c5-9240c810523a/Ttg8Il97pb.lottie"
+              style={{ width: "350px", height: "350px" }}
+              autoplay
+              loop
+            ></dotlottie-wc>
+          ) : (
+            <div style={{ width: "350px", height: "350px", display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '80px' }}>
+              ❌
+            </div>
+          )}
+        </div>
 
-      {/* Content */}
-      <div className="relative z-10 notfound-content">
-        {/* 🎬 Lottie Animation */}
-        <dotlottie-wc
-          src="https://lottie.host/73aa09e1-107a-4c02-97e0-4a1363ee2617/6kY83LrVEy.lottie"
-          style={{ width: "300px", height: "300px" }}
-          autoplay
-          loop
-        ></dotlottie-wc>
-
-        {/* 📝 Nội dung */}
+        {/* 📝 Nội dung thông báo lỗi */}
         <h1>404</h1>
         <h2>Oops! Trang không tồn tại</h2>
-        <p>
-          Trang <code>{location.pathname}</code> bạn đang tìm kiếm không tồn tại
-          hoặc đã bị xóa.
-        </p>
+        <p>Trang <code>{location.pathname}</code> bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
 
-        {/* 🔗 Navigation */}
-        <div
-          style={{
-            marginTop: "20px",
-            display: "flex",
-            gap: "10px",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
+        {/* 🔗 Navigation buttons - khác nhau tùy theo trạng thái đăng nhập */}
+        <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
           {isLoggedIn ? (
             <>
               <Link to="/home" className="back-home">
                 🏠 Trang chủ
               </Link>
-              <Link
-                to="/account"
-                className="back-home"
-                style={{ backgroundColor: "#52c41a" }}
-              >
+              <Link to="/account" className="back-home" style={{ backgroundColor: '#52c41a' }}>
                 👤 Tài khoản
               </Link>
-              <Link
-                to="/department"
-                className="back-home"
-                style={{ backgroundColor: "#722ed1" }}
-              >
+              <Link to="/department" className="back-home" style={{ backgroundColor: '#722ed1' }}>
                 🏢 Phòng ban
               </Link>
             </>
           ) : (
-            <Link
-              to="/"
-              className="back-home"
-              style={{ backgroundColor: "#1890ff" }}
-            >
-              🔐 Đăng nhập
+            <Link to="/" className="back-home">
+              🔐 Quay về đăng nhập
             </Link>
           )}
         </div>
